@@ -1,0 +1,82 @@
+//Binary Search:
+#include <chrono>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <bits/stdc++.h>
+using namespace std::chrono;
+using namespace std;
+const int MAX_SIZE = 10000;
+int arr[MAX_SIZE];
+void generate_array(int size) {
+    srand(time(NULL));
+    for (int i = 0; i < size; i++) {
+        arr[i] = rand() % 10001;
+    }
+    sort(arr, arr + size);
+}
+
+
+int binary_search(int arr[], int size, int target) {
+    int left = 0;
+    int right = size - 1;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
+long long run_experiment(int size) {
+    // Create a sorted array of size elements
+    int* arr = new int[size];
+    for (int i = 0; i < size; i++) {
+        arr[i] = i;
+    }
+
+
+    // Generate a random key to search for
+    int key = rand() % size;
+
+
+    // Measure the execution time of binary search
+    auto start = std::chrono::high_resolution_clock::now();
+    int index = binary_search(arr, size, key);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+
+
+    // Clean up the array and return the execution time
+    delete[] arr;
+    return duration;
+}
+
+
+int main()
+{
+    long long time1 = run_experiment(100);
+    long long time2 = run_experiment(1000);
+    long long time3 = run_experiment(10000);
+
+
+    cout << "Execution time for 100 elements: " << time1 << " nanoseconds" << endl;
+    cout << "Execution time for 1000 elements: " << time2 << " nanoseconds" << endl;
+    cout << "Execution time for 10000 elements: " << time3 << " nanoseconds" << endl;
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
